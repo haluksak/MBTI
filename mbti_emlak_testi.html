@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emlak Danışmanları İçin MBTI Kişilik Testi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 15px 35px rgba(255, 107, 107, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '🏠';
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            font-size: 100px;
+            opacity: 0.2;
+            transform: rotate(15deg);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .progress-container {
+            background: white;
+            border-radius: 50px;
+            padding: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .progress-bar {
+            height: 20px;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            border-radius: 50px;
+            width: 0%;
+            transition: width 0.5s ease;
+            position: relative;
+        }
+
+        .progress-text {
+            text-align: center;
+            margin-top: 10px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .question-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            transform: translateY(20px);
+            opacity: 0;
+            animation: slideUp 0.6s ease forwards;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .question-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+        }
+
+        @keyframes slideUp {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .question-number {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .question-text {
+            font-size: 1.3em;
+            font-weight: 500;
+            margin-bottom: 25px;
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+
+        .scenario {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            font-style: italic;
+            position: relative;
+        }
+
+        .scenario::before {
+            content: '💡';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            background: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .options {
+            display: grid;
+            gap: 15px;
+        }
+
+        .option {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .option:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .option:hover::before {
+            left: 100%;
+        }
+
+        .option.selected {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            border-color: #00d2d3;
+            transform: scale(1.02);
+        }
+
+        .option-letter {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin-right: 15px;
+            font-weight: 600;
+        }
+
+        .next-btn {
+            background: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            float: right;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .next-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.6);
+        }
+
+        .next-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .result-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .personality-type {
+            font-size: 4em;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .personality-name {
+            font-size: 2em;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        .result-section {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            margin: 20px 0;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: left;
+        }
+
+        .result-section h3 {
+            color: #2c3e50;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .result-section h3::before {
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+
+        .strengths h3::before { content: '💪'; }
+        .weaknesses h3::before { content: '⚠️'; }
+        .sales-style h3::before { content: '🎯'; }
+        .client-types h3::before { content: '👥'; }
+        .development h3::before { content: '📈'; }
+
+        .result-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .result-list li {
+            background: rgba(255,255,255,0.7);
+            margin: 10px 0;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-weight: 500;
+            position: relative;
+            padding-left: 45px;
+        }
+
+        .result-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #11998e;
+            font-weight: bold;
+        }
+
+        .restart-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .restart-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 2em; }
+            .question-card { padding: 25px; }
+            .question-text { font-size: 1.1em; }
+        }
+
+        .floating-icons {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .float-icon {
+            position: absolute;
+            font-size: 2em;
+            opacity: 0.1;
+            animation: float 8s infinite ease-in-out;
+        }
+
+        .float-icon:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+        .float-icon:nth-child(2) { top: 20%; right: 15%; animation-delay: 2s; }
+        .float-icon:nth-child(3) { bottom: 30%; left: 20%; animation-delay: 4s; }
+        .float-icon:nth-child(4) { bottom: 20%; right: 10%; animation-delay: 6s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(180deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-icons">
+        <div class="float-icon">🏠</div>
+        <div class="float-icon">🔑</div>
+        <div class="float-icon">📊</div>
+        <div class="float-icon">💼</div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>🏡 Emlak Kişilik Testi</h1>
+            <p>Hangi tip emlak danışmanısınız? Kişiliğinizi keşfedin!</p>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+            <div class="progress-text" id="progressText">Soru 1 / 22</div>
+        </div>
+
+        <div id="questionContainer"></div>
+
+        <div id="resultContainer" class="result-container">
+            <div class="personality-type" id="personalityType"></div>
+            <div class="personality-name" id="personalityName"></div>
+            <div id="resultContent"></div>
+            <button class="restart-btn" onclick="restartTest()">🔄 Testi Yeniden Başlat</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "Yeni bir müşteri ile karşılaştığınızda ne yaparsınız?",
+                scenario: "Ofise yeni bir müşteri girdi ve ev aramaya başlamak istiyor.",
+                options: [
+                    { text: "Hemen detaylı sorular sorar, ihtiyaçlarını analiz ederim", type: "T" },
+                    { text: "Önce samimi bir sohbet kurar, rahatlamalarını sağlarım", type: "F" }
+                ]
+            },
+            {
+                question: "Müşteri toplantılarında enerjinizi nereden alırsınız?",
+                scenario: "Bugün 5 farklı müşteriyle görüşmeniz var.",
+                options: [
+                    { text: "Her görüşme beni daha da enerjik hale getirir", type: "E" },
+                    { text: "Görüşmeler arasında sessiz bir ortamda dinlenmeyi tercih ederim", type: "I" }
+                ]
+            },
+            {
+                question: "Bir evin satış stratejisini nasıl belirlersiniz?",
+                scenario: "Portföyünüzde satılması zor bir ev var.",
+                options: [
+                    { text: "Rakip analizi yapar, piyasa verilerini inceler, stratejik plan yaparım", type: "T" },
+                    { text: "Evin hikayesini dinler, duygusal değerini öne çıkaracak hikayeler yaratırım", type: "F" }
+                ]
+            },
+            {
+                question: "Emlak fuarlarında nasıl davranırsınız?",
+                scenario: "Büyük bir emlak fuarında standınız var.",
+                options: [
+                    { text: "Aktif şekilde dolaşır, yeni insanlarla tanışır, networking yaparım", type: "E" },
+                    { text: "Standımda bekler, gelen müşterilerle derinlemesine sohbet ederim", type: "I" }
+                ]
+            },
+            {
+                question: "Müşteri ihtiyaçlarını nasıl anlarsınız?",
+                scenario: "Müşteri 'güzel bir ev' istiyor ama detay vermiyor.",
+                options: [
+                    { text: "Somut kriterler sorarım: metrekare, oda sayısı, bütçe, lokasyon", type: "S" },
+                    { text: "Yaşam tarzını, hayallerini, gelecek planlarını anlamaya çalışırım", type: "N" }
+                ]
+            },
+            {
+                question: "Zor müşterilerle nasıl başa çıkarsınız?",
+                scenario: "Müşteri sürekli karar değiştiriyor ve eleştiri yapıyor.",
+                options: [
+                    { text: "Objektif verilerle ikna etmeye çalışır, mantıklı argümanlar sunarım", type: "T" },
+                    { text: "Empati kurar, endişelerini anlar, sabırla dinlerim", type: "F" }
+                ]
+            },
+            {
+                question: "Ev gösterilerini nasıl planlarsınız?",
+                scenario: "Haftalık ev gösterisi programınızı hazırlıyorsunuz.",
+                options: [
+                    { text: "Detaylı program yapar, her dakikayı planlar, rezerv zamanları ayırırım", type: "J" },
+                    { text: "Esnek bir program yapar, müşteri isteğine göre değişiklik yaparım", type: "P" }
+                ]
+            },
+            {
+                question: "Pazarlama materyallerini nasıl hazırlarsınız?",
+                scenario: "Yeni bir proje için tanıtım materyali hazırlıyorsunuz.",
+                options: [
+                    { text: "Detaylı teknik özellikler, planlar, sayısal veriler eklerim", type: "S" },
+                    { text: "Yaşam tarzı konsepti, vizyon, geleceğe dair projeksiyonlar yaparım", type: "N" }
+                ]
+            },
+            {
+                question: "Ekip çalışmasında rolünüz nedir?",
+                scenario: "Büyük bir projenin satış ekibinde çalışıyorsunuz.",
+                options: [
+                    { text: "Liderlik yapar, koordinasyonu sağlar, aktif rol alırım", type: "E" },
+                    { text: "Uzman destek veririm, gerektiğinde danışmanlık yaparım", type: "I" }
+                ]
+            },
+            {
+                question: "Müşteri şikayetlerini nasıl ele alırsınız?",
+                scenario: "Teslim edilen evde müşteri bazı sorunlar buldu.",
+                options: [
+                    { text: "Problemi analiz eder, hızlıca çözüm önerileri sunarım", type: "T" },
+                    { text: "Önce müşterinin duygularını anlar, özür diler, rahatlatırım", type: "F" }
+                ]
+            },
+            {
+                question: "İş günlerinizi nasıl organize edersiniz?",
+                scenario: "Yoğun bir çalışma haftası planı yapıyorsunuz.",
+                options: [
+                    { text: "To-do listesi yapar, priorite sırası belirler, programa sıkı sıkıya uyarım", type: "J" },
+                    { text: "Genel bir çerçeve belirler, günlük duruma göre ayarlama yaparım", type: "P" }
+                ]
+            },
+            {
+                question: "Yeni projeler hakkında nasıl bilgi verirsiniz?",
+                scenario: "Henüz yapım aşamasında olan bir projeyi anlatıyorsunuz.",
+                options: [
+                    { text: "Mevcut planları, spesifikasyonları, teslim tarihlerini detaylandırırım", type: "S" },
+                    { text: "Gelecekteki potansiyeli, bölgenin değişimi, uzun vadeli kazanımları anlatırım", type: "N" }
+                ]
+            },
+            {
+                question: "Toplantılarda nasıl davranırsınız?",
+                scenario: "Haftalık ekip toplantısı yapılıyor.",
+                options: [
+                    { text: "Aktif katılır, fikirlerimi paylaşır, tartışmalara giреrim", type: "E" },
+                    { text: "Dinler, not alır, önemli noktalarda katkıda bulunurum", type: "I" }
+                ]
+            },
+            {
+                question: "Müşteri karar verme sürecinde nasıl davranırsınız?",
+                scenario: "Müşteri iki ev arasında kararsız kaldı.",
+                options: [
+                    { text: "Artı-eksi analizi yapar, objektif karşılaştırma tablosu hazırlarım", type: "T" },
+                    { text: "Hangi evde kendilerini daha mutlu hissedeceklerini düşünmelerini isterim", type: "F" }
+                ]
+            },
+            {
+                question: "Çalışma stiliniz nasıldır?",
+                scenario: "Büyük bir satış hedefi var ve zaman sınırlı.",
+                options: [
+                    { text: "Sistematik plan yapar, adım adım ilerler, kontrol noktaları belirlerim", type: "J" },
+                    { text: "Yaratıcı yaklaşımlar dener, esnek hareket eder, fırsatları yakalarım", type: "P" }
+                ]
+            },
+            {
+                question: "Müşteri ilişkilerinde neyi önemsersiniz?",
+                scenario: "Uzun vadeli müşteri ilişkileri kurmak istiyorsunuz.",
+                options: [
+                    { text: "Güvenilirlik, profesyonellik, hizmet kalitesi", type: "T" },
+                    { text: "Samimi bağ, empati, kişisel ilgi", type: "F" }
+                ]
+            },
+            {
+                question: "Pazar araştırması yaparken neye odaklanırsınız?",
+                scenario: "Yeni bir bölgenin pazar analizini yapıyorsunuz.",
+                options: [
+                    { text: "Mevcut fiyatlar, satış rakamları, demografik veriler", type: "S" },
+                    { text: "Gelecek potansiyeli, trend analizi, şehir planlaması", type: "N" }
+                ]
+            },
+            {
+                question: "Stresli durumlarla nasıl başa çıkarsınız?",
+                scenario: "Kritik bir satış son gün iptal oldu.",
+                options: [
+                    { text: "Problemi analiz eder, alternatif çözümler üretir, aksiyona geçerim", type: "T" },
+                    { text: "Ekip arkadaşlarımla konuşur, duygusal destek alır/veririm", type: "F" }
+                ]
+            },
+            {
+                question: "Müşteri sunum tarzınız nasıldır?",
+                scenario: "Önemli bir müşteriye portfolio sunumu yapacaksınız.",
+                options: [
+                    { text: "Büyük bir sunum hazırlar, tüm detayları önceden planlarım", type: "J" },
+                    { text: "Ana hatları belirler, müşteri tepkisine göre sunumu şekillendiririm", type: "P" }
+                ]
+            },
+            {
+                question: "Emlak sektöründe motivasyonunuz nedir?",
+                scenario: "Neden emlak danışmanlığı yapmayı seçtiniz?",
+                options: [
+                    { text: "İnsanların hayallerini gerçekleştirmelerine yardım etmek", type: "F" },
+                    { text: "Başarılı satışlar yapmak ve hedeflere ulaşmak", type: "T" }
+                ]
+            },
+            {
+                question: "Networking etkinliklerinde nasıl davranırsınız?",
+                scenario: "Sektörel bir networking etkinliğine katılıyorsunuz.",
+                options: [
+                    { text: "Mümkün olduğunca çok kişiyle tanışır, kart değişimi yaparım", type: "E" },
+                    { text: "Birkaç kişiyle derinlemesine sohbet eder, kaliteli bağlantılar kurarım", type: "I" }
+                ]
+            },
+            {
+                question: "Gelecek planlarınızı nasıl yaparsınız?",
+                scenario: "Kariyer hedeflerinizi belirliyorsunuz.",
+                options: [
+                    { text: "5 yıllık detaylı plan yapar, milestone'ları belirlerim", type: "J" },
+                    { text: "Genel hedefler belirler, fırsatlara göre yön değiştiririm", type: "P" }
+                ]
+            }
+        ];
+
+        const personalityTypes = {
+            INTJ: {
+                name: "Stratejik Mimar",
+                description: "Emlak sektörünün vizyoner analisti",
+                strengths: [
+                    "Uzun vadeli pazar trendlerini öngörür",
+                    "Sistematik ve analitik yaklaşım",
+                    "Bağımsız çalışma yeteneği",
+                    "Stratejik düşünce kapasitesi",
+                    "Detaylı pazar analizi yapabilme"
+                ],
+                weaknesses: [
+                    "Sosyal etkileşimde zorlanabilir",
+                    "Duygusal yaklaşımı ihmal edebilir",
+                    "Sabırsızlık gösterebilir",
+                    "Eleştiriye açık olmayabilir"
+                ],
+                salesStyle: [
+                    "Veri odaklı sunum yapar",
+                    "Uzun vadeli yatırım değerini vurgular",
+                    "Teknik detaylara odaklanır",
+                    "Mantıklı argümanlar sunar",
+                    "Profesyonel ve objektif yaklaşım"
+                ],
+                clientTypes: [
+                    "Yatırımcı müşteriler",
+                    "Teknik detay arayan alıcılar",
+                    "Uzun vadeli planlayanlar",
+                    "Kurumsal müşteriler"
+                ],
+                development: [
+                    "Empati becerilerini geliştir",
+                    "Sosyal ağını genişlet",
+                    "Duygusal zeka üzerinde çalış",
+                    "Esnek yaklaşım benimse"
+                ]
+            },
+            INTP: {
+                name: "Düşünce Ustası", 
+                description: "Emlak sektörünün problem çözücüsü",
+                strengths: [
+                    "Yaratıcı çözümler üretir",
+                    "Karmaşık durumları analiz eder",
+                    "Bağımsız düşünce yeteneği",
+                    "Objektif değerlendirme yapar",
+                    "Sürekli öğrenme motivasyonu"
+                ],
+                weaknesses: [
+                    "Rutinlerden sıkılabilir",
+                    "Detay takibinde zorlanabilir",
+                    "Sosyal becerilerde eksiklik",
+                    "Karar vermekte gecikebilir"
+                ],
+                salesStyle: [
+                    "Analitik yaklaşım benimser",
+                    "Alternatif seçenekler sunar",
+                    "Problem çözme odaklı",
+                    "Esnek pazarlık stratejisi",
+                    "Yenilikçi satış teknikleri"
+                ],
+                clientTypes: [
+                    "Araştırmacı müşteriler",
+                    "Teknik meraklıları",
+                    "Alternatif arayan alıcılar",
+                    "Yenilikçi projeler arayanlar"
+                ],
+                development: [
+                    "Müşteri takip sistemleri kur",
+                    "Sosyal etkileşim becerilerini geliştir",
+                    "Karar verme süreçlerini hızlandır",
+                    "Detay odaklı çalışma alışkanlığı edin"
+                ]
+            },
+            ENTJ: {
+                name: "Komutan Lider",
+                description: "Emlak sektörünün doğal lideri",
+                strengths: [
+                    "Güçlü liderlik özellikleri",
+                    "Stratejik planlama yeteneği",
+                    "Hedef odaklı yaklaşım",
+                    "Hızlı karar verme",
+                    "Ekip yönetme becerisi"
+                ],
+                weaknesses: [
+                    "Aşırı otoriter olabilir",
+                    "Duygusal ihtiyaçları göz ardı edebilir",
+                    "Sabırsızlık gösterebilir",
+                    "Eleştiriye kapalı olabilir"
+                ],
+                salesStyle: [
+                    "Kendinden emin sunum",
+                    "Hızlı closing teknikleri",
+                    "Liderlik pozisyonu alır",
+                    "Büyük hedefler belirler",
+                    "Rekabetçi yaklaşım"
+                ],
+                clientTypes: [
+                    "Karar verici pozisyondaki müşteriler",
+                    "Büyük yatırımcılar",
+                    "Kurumsal alıcılar",
+                    "Hızlı karar veren müşteriler"
+                ],
+                development: [
+                    "Empati becerilerini geliştir",
+                    "Dinleme yeteneklerini artır",
+                    "Sabır göstermeyi öğren",
+                    "Takım çalışmasına odaklan"
+                ]
+            },
+            ENTP: {
+                name: "Yaratıcı Vizyoner",
+                description: "Emlak sektörünün yenilikçi ruhlu satış uzmanı",
+                strengths: [
+                    "Yaratıcı pazarlama stratejileri",
+                    "Güçlü iletişim becerileri",
+                    "Hızlı uyum sağlama",
+                    "Problem çözme yeteneği",
+                    "Networking konusunda yetenekli"
+                ],
+                weaknesses: [
+                    "Rutinlerden sıkılabilir",
+                    "Detay takibinde zorlanabilir",
+                    "Odaklanma problemi yaşayabilir",
+                    "Sabırsızlık gösterebilir"
+                ],
+                salesStyle: [
+                    "Yaratıcı sunum teknikleri",
+                    "Esnek pazarlık stratejisi",
+                    "Yenilikçi yaklaşımlar",
+                    "Hızlı adaptasyon",
+                    "Çoklu seçenek sunumu"
+                ],
+                clientTypes: [
+                    "Yenilikçi projeler arayan müşteriler",
+                    "Esnek yaklaşım bekleyen alıcılar",
+                    "Yaratıcı çözümler isteyenler",
+                    "Trend takipçisi müşteriler"
+                ],
+                development: [
+                    "Detay odaklı çalışma sistemleri kur",
+                    "Proje takip becerilerini geliştir",
+                    "Sabır göstermeyi öğren",
+                    "Sistematik yaklaşım benimse"
+                ]
+            },
+            INFJ: {
+                name: "Danışman Rehber",
+                description: "Emlak sektörünün empatik vizyoneri",
+                strengths: [
+                    "Güçlü empati becerileri",
+                    "Uzun vadeli vizyoner bakış",
+                    "Müşteri ihtiyaçlarını derinlemesine anlama",
+                    "Güvenilir danışmanlık",
+                    "Kişisel bağ kurma yeteneği"
+                ],
+                weaknesses: [
+                    "Aşırı mükemmeliyetçilik",
+                    "Strese karşı hassasiyet",
+                    "Çok fazla kişisel yatırım",
+                    "Eleştiriye aşırı duyarlılık"
+                ],
+                salesStyle: [
+                    "Kişiselleştirilmiş hizmet",
+                    "Uzun vadeli ilişki odaklı",
+                    "Danışmanlık yaklaşımı",
+                    "Değer odaklı sunum",
+                    "Güven temelli satış"
+                ],
+                clientTypes: [
+                    "İlk ev alan müşteriler",
+                    "Duygusal değer arayan alıcılar",
+                    "Uzun vadeli ilişki isteyenler",
+                    "Rehberlik bekleyen müşteriler"
+                ],
+                development: [
+                    "Sınır koymayı öğren",
+                    "Stres yönetimi tekniklerini uygula",
+                    "Eleştiriye açık ol",
+                    "Kişisel-profesyonel dengeyi kur"
+                ]
+            },
+            INFP: {
+                name: "Değer Odaklı Uzman",
+                description: "Emlak sektörünün samimi rehberi",
+                strengths: [
+                    "Autentik ve samimi yaklaşım",
+                    "Güçlü değer sistemi",
+                    "Yaratıcı çözümler",
+                    "Müşteri odaklılık",
+                    "Kişisel ilgi gösterme"
+                ],
+                weaknesses: [
+                    "Çatışmadan kaçınma",
+                    "Aşırı idealizmle yaklaşım",
+                    "Pazarlık konusunda zorlanma",
+                    "Eleştiriye hassasiyet"
+                ],
+                salesStyle: [
+                    "Değer temelli satış",
+                    "Hikaye anlatımı",
+                    "Kişiselleştirilmiş hizmet",
+                    "Güven inşası odaklı",
+                    "Samimi ve doğal yaklaşım"
+                ],
+                clientTypes: [
+                    "Değer odaklı müşteriler",
+                    "Samimi ilişki arayan alıcılar",
+                    "Yaşam tarzı odaklı müşteriler",
+                    "Sosyal sorumluluk sahibi alıcılar"
+                ],
+                development: [
+                    "Pazarlık becerilerini geliştir",
+                    "Çatışma yönetimi öğren",
+                    "Objektif yaklaşım benimse",
+                    "Kendine güven geliştir"
+                ]
+            },
+            ENFJ: {
+                name: "Mentor Satış Uzmanı",
+                description: "Emlak sektörünün ilham verici lideri",
+                strengths: [
+                    "Güçlü liderlik ve motivasyon",
+                    "Mükemmel iletişim becerileri",
+                    "Takım çalışması yeteneği",
+                    "Müşteri gelişimi odaklı",
+                    "Empati ve anlayış"
+                ],
+                weaknesses: [
+                    "Aşırı idealizm",
+                    "Kendini fazla yoran yaklaşım",
+                    "Eleştiriye hassasiyet",
+                    "Objektiflik kaybı"
+                ],
+                salesStyle: [
+                    "İlham verici sunum",
+                    "Uzun vadeli ilişki odaklı",
+                    "Takım halinde çalışma",
+                    "Değer yaratma odaklı",
+                    "Gelişim odaklı danışmanlık"
+                ],
+                clientTypes: [
+                    "Gelişim arayan müşteriler",
+                    "Takım kararları alan alıcılar",
+                    "Uzun vadeli ilişki isteyenler",
+                    "Değer odaklı müşteriler"
+                ],
+                development: [
+                    "Objektif analiz yeteneklerini geliştir",
+                    "Sınır koymayı öğren",
+                    "Kendine zaman ayır",
+                    "Eleştiriye açık ol"
+                ]
+            },
+            ENFP: {
+                name: "Çok Yönlü Satış Uzmanı",
+                description: "Emlak sektörünün enerjik ve yaratıcı gücü",
+                strengths: [
+                    "Yüksek enerji ve motivasyon",
+                    "Yaratıcı pazarlama yaklaşımları",
+                    "Güçlü iletişim becerileri",
+                    "Adaptasyon yeteneği",
+                    "İnsanlarla kolay bağ kurma"
+                ],
+                weaknesses: [
+                    "Odaklanma problemi",
+                    "Detay takibinde zorlanma",
+                    "Rutinlerden sıkılma",
+                    "Aşırı iyimserlik"
+                ],
+                salesStyle: [
+                    "Enerjik ve coşkulu sunum",
+                    "Yaratıcı pazarlama stratejileri",
+                    "Sosyal ağ kullanımı",
+                    "Esnek yaklaşım",
+                    "Pozitif atmosfer yaratma"
+                ],
+                clientTypes: [
+                    "Enerjik ve dinamik müşteriler",
+                    "Sosyal çevre arayan alıcılar",
+                    "Yaratıcı projeler isteyenler",
+                    "Esnek yaklaşım bekleyenler"
+                ],
+                development: [
+                    "Detay odaklı sistemler kur",
+                    "Proje takip becerilerini geliştir",
+                    "Sabır göstermeyi öğren",
+                    "Objektif analiz yapmayı öğren"
+                ]
+            },
+            ISTJ: {
+                name: "Güvenilir Uzman",
+                description: "Emlak sektörünün sağlam temeli",
+                strengths: [
+                    "Güvenilirlik ve tutarlılık",
+                    "Detay odaklı yaklaşım",
+                    "Sistematik çalışma tarzı",
+                    "Deneyim odaklı danışmanlık",
+                    "Kaliteli hizmet sunumu"
+                ],
+                weaknesses: [
+                    "Değişime direnç",
+                    "Yenilikçi yaklaşımlarda zorlanma",
+                    "Esnek olmama",
+                    "Yaratıcılık eksikliği"
+                ],
+                salesStyle: [
+                    "Güvenilir ve tutarlı hizmet",
+                    "Detaylı bilgi sunumu",
+                    "Sistematik süreç takibi",
+                    "Deneyim paylaşımı",
+                    "Kalite odaklı yaklaşım"
+                ],
+                clientTypes: [
+                    "Güvenilirlik arayan müşteriler",
+                    "Detaylı bilgi isteyen alıcılar",
+                    "Geleneksel yaklaşım bekleyenler",
+                    "Kalite odaklı müşteriler"
+                ],
+                development: [
+                    "Yaratıcı yaklaşımları benimse",
+                    "Değişime açık ol",
+                    "Esnek çalışma tarzı geliştir",
+                    "Yenilikçi teknikleri öğren"
+                ]
+            },
+            ISFJ: {
+                name: "Destekleyici Uzman",
+                description: "Emlak sektörünün şefkatli hizmet sağlayıcısı",
+                strengths: [
+                    "Müşteri odaklı hizmet",
+                    "Güçlü empati becerileri",
+                    "Detay odaklı yaklaşım",
+                    "Destekleyici tutum",
+                    "Güvenilir danışmanlık"
+                ],
+                weaknesses: [
+                    "Çatışmadan kaçınma",
+                    "Aşırı mütevazılık",
+                    "Kendini öne çıkarmama",
+                    "Eleştiriye hassasiyet"
+                ],
+                salesStyle: [
+                    "Destekleyici danışmanlık",
+                    "Kişiselleştirilmiş hizmet",
+                    "Güven temelli satış",
+                    "Detaylı bilgi sunumu",
+                    "Sabırlı yaklaşım"
+                ],
+                clientTypes: [
+                    "İlk ev alan müşteriler",
+                    "Destek arayan alıcılar",
+                    "Güven odaklı müşteriler",
+                    "Detaylı rehberlik isteyenler"
+                ],
+                development: [
+                    "Kendine güven geliştir",
+                    "Pazarlama becerilerini artır",
+                    "Çatışma yönetimi öğren",
+                    "Proaktif yaklaşım benimse"
+                ]
+            },
+            ESTJ: {
+                name: "Sonuç Odaklı Yönetici",
+                description: "Emlak sektörünün etkin organizatörü",
+                strengths: [
+                    "Güçlü organizasyon becerileri",
+                    "Hedef odaklı yaklaşım",
+                    "Liderlik özellikleri",
+                    "Hızlı karar verme",
+                    "Sistematik çalışma"
+                ],
+                weaknesses: [
+                    "Esneklik eksikliği",
+                    "Duygusal yaklaşımı göz ardı etme",
+                    "Aşırı kontrolcü olma",
+                    "Sabırsızlık"
+                ],
+                salesStyle: [
+                    "Sonuç odaklı yaklaşım",
+                    "Hızlı closing teknikleri",
+                    "Sistematik süreç yönetimi",
+                    "Hedef temelli çalışma",
+                    "Etkin organizasyon"
+                ],
+                clientTypes: [
+                    "Hızlı karar veren müşteriler",
+                    "Sonuç odaklı alıcılar",
+                    "Kurumsal müşteriler",
+                    "Yatırımcı profili"
+                ],
+                development: [
+                    "Empati becerilerini geliştir",
+                    "Esnek yaklaşım öğren",
+                    "Dinleme becerilerini artır",
+                    "Sabır göstermeyi öğren"
+                ]
+            },
+            ESFJ: {
+                name: "Sosyal Ağ Uzmanı",
+                description: "Emlak sektörünün popüler danışmanı",
+                strengths: [
+                    "Güçlü sosyal beceriler",
+                    "Müşteri memnuniyeti odaklı",
+                    "Takım çalışması yeteneği",
+                    "Destekleyici yaklaşım",
+                    "İletişim becerileri"
+                ],
+                weaknesses: [
+                    "Eleştiriye hassasiyet",
+                    "Çatışmadan kaçınma",
+                    "Aşırı kişiselleştirme",
+                    "Objektiflik kaybı"
+                ],
+                salesStyle: [
+                    "Sosyal ağ kullanımı",
+                    "Müşteri memnuniyeti odaklı",
+                    "Takım halinde çalışma",
+                    "Samimi yaklaşım",
+                    "Referans odaklı satış"
+                ],
+                clientTypes: [
+                    "Sosyal onay arayan müşteriler",
+                    "Referans odaklı alıcılar",
+                    "Samimi ilişki isteyenler",
+                    "Toplumsal statü odaklı müşteriler"
+                ],
+                development: [
+                    "Objektif analiz becerilerini geliştir",
+                    "Eleştiriye açık ol",
+                    "Çatışma yönetimi öğren",
+                    "Bağımsız karar verme geliştir"
+                ]
+            },
+            ISTP: {
+                name: "Pratik Çözümcü",
+                description: "Emlak sektörünün teknik uzmanı",
+                strengths: [
+                    "Pratik çözümler üretme",
+                    "Teknik bilgi ve deneyim",
+                    "Objektif değerlendirme",
+                    "Bağımsız çalışma",
+                    "Problem çözme yeteneği"
+                ],
+                weaknesses: [
+                    "Sosyal etkileşimde zorlanma",
+                    "Uzun vadeli planlama eksikliği",
+                    "İletişim becerilerinde zayıflık",
+                    "Duygusal yaklaşımı göz ardı etme"
+                ],
+                salesStyle: [
+                    "Teknik odaklı sunum",
+                    "Pratik çözümler sunma",
+                    "Objektif analiz",
+                    "Doğrudan yaklaşım",
+                    "Deneyim paylaşımı"
+                ],
+                clientTypes: [
+                    "Teknik detay arayan müşteriler",
+                    "Pratik çözümler isteyenler",
+                    "Objektif yaklaşım bekleyenler",
+                    "Deneyimli alıcılar"
+                ],
+                development: [
+                    "İletişim becerilerini geliştir",
+                    "Sosyal etkileşim artır",
+                    "Uzun vadeli planlama öğren",
+                    "Empati becerilerini geliştir"
+                ]
+            },
+            ISFP: {
+                name: "Uyumlu Danışman",
+                description: "Emlak sektörünün sanatçı ruhu",
+                strengths: [
+                    "Estetik ve güzellik anlayışı",
+                    "Müşteri odaklı yaklaşım",
+                    "Uyumlu çalışma tarzı",
+                    "Yaratıcı sunum becerileri",
+                    "Samimi ve doğal yaklaşım"
+                ],
+                weaknesses: [
+                    "Çatışmadan kaçınma",
+                    "Kendini öne çıkarmama",
+                    "Pazarlık konusunda zorlanma",
+                    "Eleştiriye hassasiyet"
+                ],
+                salesStyle: [
+                    "Estetik odaklı sunum",
+                    "Sanatsal yaklaşım",
+                    "Uyumlu çalışma",
+                    "Kişiselleştirilmiş hizmet",
+                    "Değer temelli satış"
+                ],
+                clientTypes: [
+                    "Estetik değer arayan müşteriler",
+                    "Sanatsal yaklaşım isteyenler",
+                    "Uyumlu çalışma bekleyenler",
+                    "Yaratıcı projeler arayanlar"
+                ],
+                development: [
+                    "Kendine güven geliştir",
+                    "Pazarlama becerilerini artır",
+                    "Çatışma yönetimi öğren",
+                    "Proaktif yaklaşım benimse"
+                ]
+            },
+            ESTP: {
+                name: "Dinamik Satış Uzmanı",
+                description: "Emlak sektörünün enerjik performansçısı",
+                strengths: [
+                    "Yüksek enerji ve dinamizm",
+                    "Hızlı adaptasyon yeteneği",
+                    "Güçlü ikna becerileri",
+                    "Sosyal beceriler",
+                    "Anlık karar verme"
+                ],
+                weaknesses: [
+                    "Uzun vadeli planlama eksikliği",
+                    "Detay takibinde zorlanma",
+                    "Sabırsızlık",
+                    "Rutinlerden sıkılma"
+                ],
+                salesStyle: [
+                    "Dinamik ve enerjik sunum",
+                    "Hızlı closing teknikleri",
+                    "Sosyal ağ kullanımı",
+                    "Esnek pazarlık",
+                    "Anlık fırsat yakalama"
+                ],
+                clientTypes: [
+                    "Hızlı karar veren müşteriler",
+                    "Dinamik yaklaşım bekleyenler",
+                    "Sosyal müşteriler",
+                    "Esnek alıcılar"
+                ],
+                development: [
+                    "Uzun vadeli planlama öğren",
+                    "Detay takip sistemleri kur",
+                    "Sabır göstermeyi öğren",
+                    "Sistematik yaklaşım benimse"
+                ]
+            },
+            ESFP: {
+                name: "Coşkulu Satış Uzmanı",
+                description: "Emlak sektörünün pozitif enerjisi",
+                strengths: [
+                    "Pozitif enerji ve coşku",
+                    "Güçlü sosyal beceriler",
+                    "Yaratıcı pazarlama",
+                    "Müşteri ilişkileri",
+                    "Esnek yaklaşım"
+                ],
+                weaknesses: [
+                    "Uzun vadeli planlama zorluğu",
+                    "Detay takibinde eksiklik",
+                    "Eleştiriye hassasiyet",
+                    "Objektiflik kaybı"
+                ],
+                salesStyle: [
+                    "Coşkulu ve pozitif sunum",
+                    "Yaratıcı pazarlama stratejileri",
+                    "Sosyal medya kullanımı",
+                    "Kişisel bağ kurma",
+                    "Eğlenceli yaklaşım"
+                ],
+                clientTypes: [
+                    "Pozitif enerji arayan müşteriler",
+                    "Sosyal aktivite odaklı alıcılar",
+                    "Yaratıcı projeler isteyenler",
+                    "Eğlenceli süreç bekleyenler"
+                ],
+                development: [
+                    "Uzun vadeli planlama becerilerini geliştir",
+                    "Detay odaklı sistemler kur",
+                    "Objektif analiz öğren",
+                    "Profesyonel sınırları kur"
+                ]
+            }
+        };
+
+        let currentQuestion = 0;
+        let answers = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
+
+        function showQuestion() {
+            const question = questions[currentQuestion];
+            const container = document.getElementById('questionContainer');
+            
+            container.innerHTML = `
+                <div class="question-card">
+                    <div class="question-number">${currentQuestion + 1}</div>
+                    <div class="question-text">${question.question}</div>
+                    <div class="scenario">${question.scenario}</div>
+                    <div class="options">
+                        ${question.options.map((option, index) => `
+                            <div class="option" onclick="selectOption(${index})">
+                                <span class="option-letter">${String.fromCharCode(65 + index)}</span>
+                                ${option.text}
+                            </div>
+                        `).join('')}
+                    </div>
+                    <button class="next-btn" id="nextBtn" onclick="nextQuestion()" disabled>
+                        ${currentQuestion === questions.length - 1 ? 'Sonuçları Gör' : 'Sonraki Soru'} →
+                    </button>
+                </div>
+            `;
+
+            updateProgress();
+        }
+
+        function selectOption(optionIndex) {
+            const options = document.querySelectorAll('.option');
+            options.forEach(option => option.classList.remove('selected'));
+            options[optionIndex].classList.add('selected');
+            
+            document.getElementById('nextBtn').disabled = false;
+        }
+
+        function nextQuestion() {
+            const selectedOption = document.querySelector('.option.selected');
+            if (!selectedOption) return;
+
+            const question = questions[currentQuestion];
+            const selectedIndex = Array.from(document.querySelectorAll('.option')).indexOf(selectedOption);
+            const selectedType = question.options[selectedIndex].type;
+            
+            answers[selectedType]++;
+
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                showQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('progressText').textContent = `Soru ${currentQuestion + 1} / ${questions.length}`;
+        }
+
+        function determinePersonalityType() {
+            const type = 
+                (answers.E > answers.I ? 'E' : 'I') +
+                (answers.S > answers.N ? 'S' : 'N') +
+                (answers.T > answers.F ? 'T' : 'F') +
+                (answers.J > answers.P ? 'J' : 'P');
+            return type;
+        }
+
+        function showResult() {
+            const personalityType = determinePersonalityType();
+            const typeData = personalityTypes[personalityType];
+            
+            document.getElementById('questionContainer').style.display = 'none';
+            document.querySelector('.progress-container').style.display = 'none';
+            
+            document.getElementById('personalityType').textContent = personalityType;
+            document.getElementById('personalityName').textContent = typeData.name;
+            
+            document.getElementById('resultContent').innerHTML = `
+                <div class="result-section">
+                    <p style="font-size: 1.2em; margin-bottom: 20px; font-style: italic;">
+                        ${typeData.description}
+                    </p>
+                </div>
+                
+                <div class="result-section strengths">
+                    <h3>Güçlü Yönleriniz</h3>
+                    <ul class="result-list">
+                        ${typeData.strengths.map(strength => `<li>${strength}</li>`).join('')}
+                    </ul>
+                </div>
+                
+                <div class="result-section weaknesses">
+                    <h3>Gelişim Alanlarınız</h3>
+                    <ul class="result-list">
+                        ${typeData.weaknesses.map(weakness => `<li>${weakness}</li>`).join('')}
+                    </ul>
+                </div>
+                
+                <div class="result-section sales-style">
+                    <h3>Satış Tarzınız</h3>
+                    <ul class="result-list">
+                        ${typeData.salesStyle.map(style => `<li>${style}</li>`).join('')}
+                    </ul>
+                </div>
+                
+                <div class="result-section client-types">
+                    <h3>Uyumlu Müşteri Tipleri</h3>
+                    <ul class="result-list">
+                        ${typeData.clientTypes.map(client => `<li>${client}</li>`).join('')}
+                    </ul>
+                </div>
+                
+                <div class="result-section development">
+                    <h3>Gelişim Önerileri</h3>
+                    <ul class="result-list">
+                        ${typeData.development.map(dev => `<li>${dev}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+            
+            document.getElementById('resultContainer').style.display = 'block';
+            
+            // Scroll to result
+            document.getElementById('resultContainer').scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+        }
+
+        function restartTest() {
+            currentQuestion = 0;
+            answers = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
+            
+            document.getElementById('resultContainer').style.display = 'none';
+            document.getElementById('questionContainer').style.display = 'block';
+            document.querySelector('.progress-container').style.display = 'block';
+            
+            showQuestion();
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Initialize the test
+        showQuestion();
+    </script>
+</body>
+</html>
